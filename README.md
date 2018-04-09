@@ -21,8 +21,7 @@ namespace phonedatacmd
 
         static void Main(string[] args)
         {
-            Phonedata.Phonedata pd = new Phonedata.Phonedata();
-            pd.Init("phone.dat");
+            Phonedata.Phonedata pd = new Phonedata.Phonedata("phone.dat");
             string output;
             output = pd.Lookup("13822399111").ToString();
             Console.WriteLine(output);
