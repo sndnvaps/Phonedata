@@ -8,14 +8,14 @@ namespace Phonedata
 {
    public class Phonedata
     {
-        static  Int32 indexOffset; //第一个偏移量
-        static  Int32 total_len; //文件总长度
-        static  string Version = "";  //版本号
-        static FileStream content; // 读取的文件内容
-        static Int32 total_record; //记录数据量
-        static Int32 PHONE_INDEX_LENGTH = 9; //
-        static Int32 INT_LEN = 4;//
-        static byte[] Buf; //存储所有的数据于byte[]中
+        private static  Int32 indexOffset; //第一个偏移量
+        private static  Int32 total_len; //文件总长度
+        private static  string Version = "";  //版本号
+        private static FileStream content; // 读取的文件内容
+        private static Int32 total_record; //记录数据量
+        private static Int32 PHONE_INDEX_LENGTH = 9; //
+        private static Int32 INT_LEN = 4;//
+        private static byte[] Buf; //存储所有的数据于byte[]中
         enum CardType
         {
             UNKNOWN = 0,    // 未知，查找失败
@@ -35,8 +35,18 @@ namespace Phonedata
            public string ZipCode;
            public string AreaZon;
            public string CardType;
+            
+            public void Set(string phoneNum, string province, string city, string zipCode, string areaZon, string cardType)
+            {
+                this.PhoneNum = phoneNum;
+                this.Province = province;
+                this.City = city;
+                this.ZipCode = zipCode;
+                this.AreaZon = areaZon;
+                this.CardType = cardType;
+            }
 
-          override  public string ToString()
+           override  public string ToString()
             {
                 string tmp = string.Format("PhoneNum: {0}\nAreaZon: {1}\nCardType: {2}\nCity: {3}\nZipCode: {4}\nProvince: {5}\n",this.PhoneNum,this.AreaZon,this.CardType,this.City,this.ZipCode,this.Province);
                 return tmp;
@@ -99,26 +109,6 @@ namespace Phonedata
             }
             tmp = (Int32)(b[0]) | ((Int32)(b[1])) << 8 | ((Int32)(b[2])) << 16 | ((Int32)(b[3])) << 24;
             return tmp;
-        }
-
-        //char2ansii
-        private byte Char2byte(char c)
-        {
-            byte b;
-            if ('0' <= c && c <= '9')
-            {
-                b = (byte)(c - '0');
-            } else if ('a' <= c && c <= 'z')
-            {
-                b = (byte)(c - 'a' + 10);
-            } else if ('A' <= c && c <= 'Z')
-            {
-                b = (byte)(c - 'A' + 10);
-            } else
-            {
-                return 0;
-            }
-            return b;
         }
 
         private string GetCardType(byte b)
@@ -313,17 +303,9 @@ namespace Phonedata
 
                     data_str = System.Text.Encoding.UTF8.GetString(data);
 
-                    //Console.WriteLine(data_str);
-
                     data_str_arr = data_str.Split('|');
                     card_str = GetCardType(card_type);
-                    pr.PhoneNum = pi.PhoneNum;
-                    pr.Province = data_str_arr[0];
-                    pr.City = data_str_arr[1];
-                    pr.ZipCode = data_str_arr[2];
-                    pr.AreaZon = data_str_arr[3];
-                    pr.CardType = card_str;
-
+                    pr.Set(pi.PhoneNum, data_str_arr[0], data_str_arr[1], data_str_arr[2], data_str_arr[3], card_str);
 
                     return pr;
                 }
@@ -332,19 +314,5 @@ namespace Phonedata
             return pr;
         }
 
-    /*
-        static void Main(string[] args)
-        {
-            //nt[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-            //nt index = BinarySearch(arr, 10);
-            Init("phone.dat");
-            string output = Lookup("18924275498").ToString();
-            Console.WriteLine(output);
-            output = Lookup("13211291577").ToString();
-            Console.WriteLine(output);
-            output = Lookup(13822399732).ToString();
-            Console.WriteLine(output);
-        }
-    */
     }
 }
