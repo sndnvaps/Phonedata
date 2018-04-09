@@ -60,6 +60,20 @@ namespace Phonedata
            public string PhoneNum;
         };
 
+        public Phonedata()
+        {
+            string phone_dat_path = "phone.dat";
+            Init(phone_dat_path);
+        }
+        public Phonedata(string phonedata)
+        {
+            Init(phonedata);
+        }
+
+        ~Phonedata()
+        {
+            content.Close();
+        }
         /// <summary>  
         /// 截取字节数组  
         /// </summary>  
