@@ -27,6 +27,9 @@ namespace Phonedata
             CMCC_V			// 移动虚拟运营商
         };
 
+        /// <summary>
+        /// 手机号码信息结构体
+        /// </summary>
       public struct PhoneRecord
         {
            public string PhoneNum;
@@ -36,6 +39,15 @@ namespace Phonedata
            public string AreaZon;
            public string CardType;
             
+            /// <summary>
+            /// 用于设置 PhoneRecord{} 结构体中的数据
+            /// </summary>
+            /// <param name="phoneNum"></param>
+            /// <param name="province"></param>
+            /// <param name="city"></param>
+            /// <param name="zipCode"></param>
+            /// <param name="areaZon"></param>
+            /// <param name="cardType"></param>
             public void Set(string phoneNum, string province, string city, string zipCode, string areaZon, string cardType)
             {
                 this.PhoneNum = phoneNum;
@@ -46,6 +58,10 @@ namespace Phonedata
                 this.CardType = cardType;
             }
 
+            /// <summary>
+            /// 把 PhoneRecord{} 结构体中的数据，转换成string
+            /// </summary>
+            /// <returns></returns>
            override  public string ToString()
             {
                 string tmp = string.Format("PhoneNum: {0}\nAreaZon: {1}\nCardType: {2}\nCity: {3}\nZipCode: {4}\nProvince: {5}\n",this.PhoneNum,this.AreaZon,this.CardType,this.City,this.ZipCode,this.Province);
@@ -54,22 +70,35 @@ namespace Phonedata
         
         };
 
+        /// <summary>
+        /// 手机号码结构体
+        /// </summary>
         private struct PhoneInfo
         {
            public UInt32 Phone7;
            public string PhoneNum;
         };
 
+        /// <summary>
+        /// class phonedata 的构造函数
+        /// </summary>
         public Phonedata()
         {
             string phone_dat_path = "phone.dat";
             Init(phone_dat_path);
         }
+
+        /// <summary>
+        /// class phonedata 的构造函数
+        /// </summary>
         public Phonedata(string phonedata)
         {
             Init(phonedata);
         }
 
+        /// <summary>
+        /// class phonedata 的析构函数
+        /// </summary>
         ~Phonedata()
         {
             content.Close();
@@ -104,6 +133,11 @@ namespace Phonedata
         }
 
         //将Stream 转换成 byte[]
+        /// <summary>
+        /// 将 Stream类型转换成 byte[]类型
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
         public  byte[] StreamToBytes(Stream stream)
         {
             byte[] bytes = new byte[stream.Length];
@@ -114,6 +148,11 @@ namespace Phonedata
         }
 
         //turn 4 byte to int32
+        /// <summary>
+        /// 将 4个byte转换成 int32类型
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
         private  Int32 Get4(byte[] b)
         {
             Int32 tmp;
@@ -125,6 +164,11 @@ namespace Phonedata
             return tmp;
         }
 
+        /// <summary>
+        /// 返回 手机号码的卡类别，比如：移动，电信，联通。。。
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
         private string GetCardType(byte b)
         {
             int type = Convert.ToInt32(b);
@@ -190,6 +234,9 @@ namespace Phonedata
             return -1;
         }
 
+        /// <summary>
+        ///  初始化程序
+        /// </summary>
         public void Init(string phonedata)
         {
             byte[] tmp = new byte[4];
@@ -214,6 +261,20 @@ namespace Phonedata
 
         }
 
+        /// <summary>
+        /// 返回phone.dat的版本号
+        /// </summary>
+        /// <returns> 返回版本号</returns>
+        public string GetVersion()
+        {
+            return Version;
+        }
+
+        /// <summary>
+        /// 返回查找的号码的信息
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
         public  PhoneRecord  Lookup(Int64 phone)
         {
             PhoneInfo pi = new PhoneInfo { };
@@ -231,7 +292,12 @@ namespace Phonedata
             return  new PhoneRecord{ };
         }
 
-        public  PhoneRecord Lookup(string phone)
+        /// <summary>
+        /// 返回查找的号码的信息
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public PhoneRecord Lookup(string phone)
         {
             long phone7;
             PhoneInfo pi = new PhoneInfo { };
@@ -265,13 +331,18 @@ namespace Phonedata
             return new PhoneRecord { };
         }
 
+        /// <summary>
+        /// 利用二分法查找 phone.dat数据库中手机号码的信息
+        /// </summary>
+        /// <param name="pi"></param>
+        /// <returns>返回查找到的手机号码信息</returns>
         private  PhoneRecord FindPhone(PhoneInfo pi)
         {
             PhoneRecord pr = new PhoneRecord { };
             Int32 phone_seven_int32;
             int left = 0;
-            int right = ((int)content.Length - indexOffset) / 9;
-            int total_len = (int)content.Length;
+            int right = 0;
+            int total_len = Phonedata.total_len;
             int mid = 0;
             int offset = 0;
             Int32 cur_phone, record_offset;
