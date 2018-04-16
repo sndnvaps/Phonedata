@@ -1,6 +1,12 @@
 # phonedata port to CSharp
 
-#how to use it 
+# Test Platform:
+
+    Windows 7 x64
+    vs 2017
+    Net Framework v4.6.1
+
+# how to use it
 
     import phonedata.dll to you C# project
 	
