@@ -3,7 +3,7 @@
 
 # It can download from Nuget.com now
 
-	Install-Package Phonedata
+	Install-Package Phonedata -Version 1.0.0
 	
 # Test Platform:
 
