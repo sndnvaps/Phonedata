@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Phonedata info api Dynamic Link Library")]
 [assembly: AssemblyDescription("手机号码归属地信息库")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyConfiguration("Release")]
 [assembly: AssemblyCompany("sndnvaps.com")]
 [assembly: AssemblyProduct("Phonedata info api Dynamic Link Library")]
 [assembly: AssemblyCopyright("Copyright © Aiicy Team 2018")]

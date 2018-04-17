@@ -1,14 +1,20 @@
 # phonedata port to CSharp
 
+
+# It can download from Nuget.com now
+
+	Install-Package Phonedata
+	
 # Test Platform:
 
     Windows 7 x64
     vs 2017
     Net Framework v4.6.1
 
+--------------------------------------------
 # how to use it
 
-    import phonedata.dll to you C# project
+    import phonedata.dll to you C# project after build from source code or just use Powershell to install it 
 	
 # example code
 
