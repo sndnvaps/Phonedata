@@ -362,7 +362,8 @@ namespace Phonedata
                 {
                     return pr;
                 }
-                mid = (left + right) / 2;
+                //mid = (left + right) / 2;
+                mid = (left + right) >> 1;
                 offset = indexOffset + mid * PHONE_INDEX_LENGTH;
                 if (offset >= total_len)
                 {
