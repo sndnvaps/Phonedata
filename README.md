@@ -79,4 +79,4 @@ namespace phonedatacmd
  * 在记录区从上一步得到的记录偏移处取数据，直到遇到'\0'。
 
 ## License
-#### [MIT](https://opensource.org/licenses/mit-license.php)
+#### [MIT](https://sndnvaps.mit-license.org/2018)
