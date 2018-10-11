@@ -6,16 +6,11 @@ using System.Text;
 
 namespace Phonedata
 {
-   public class Phonedata
+    public class PhoneData
     {
-        private static  Int32 indexOffset; //第一个偏移量
-        private static  Int32 total_len; //文件总长度
-        private static  string Version = "";  //版本号
-        private static FileStream content; // 读取的文件内容
-        private static Int32 total_record; //记录数据量
-        private static Int32 PHONE_INDEX_LENGTH = 9; //
-        private static Int32 INT_LEN = 4;//
+        private static string Version = "";  //版本号
         private static byte[] Buf; //存储所有的数据于byte[]中
+        private static Dictionary<int, string> dicBuf;
         enum CardType
         {
             UNKNOWN = 0,    // 未知，查找失败
@@ -30,15 +25,15 @@ namespace Phonedata
         /// <summary>
         /// 手机号码信息结构体
         /// </summary>
-      public struct PhoneRecord
+        public struct PhoneRecord
         {
-           public string PhoneNum;
-           public string Province;
-           public string City;
-           public string ZipCode;
-           public string AreaZon;
-           public string CardType;
-            
+            public string PhoneNum;
+            public string Province;
+            public string City;
+            public string ZipCode;
+            public string AreaZon;
+            public string CardType;
+
             /// <summary>
             /// 用于设置 PhoneRecord{} 结构体中的数据
             /// </summary>
@@ -62,12 +57,12 @@ namespace Phonedata
             /// 把 PhoneRecord{} 结构体中的数据，转换成string
             /// </summary>
             /// <returns></returns>
-           override  public string ToString()
+            override public string ToString()
             {
-                string tmp = string.Format("PhoneNum: {0}\nAreaZon: {1}\nCardType: {2}\nCity: {3}\nZipCode: {4}\nProvince: {5}\n",this.PhoneNum,this.AreaZon,this.CardType,this.City,this.ZipCode,this.Province);
+                string tmp = string.Format("PhoneNum: {0}\nAreaZon: {1}\nCardType: {2}\nCity: {3}\nZipCode: {4}\nProvince: {5}\n", this.PhoneNum, this.AreaZon, this.CardType, this.City, this.ZipCode, this.Province);
                 return tmp;
             }
-        
+
         };
 
         /// <summary>
@@ -75,14 +70,14 @@ namespace Phonedata
         /// </summary>
         private struct PhoneInfo
         {
-           public UInt32 Phone7;
-           public string PhoneNum;
+            public UInt32 Phone7;
+            public string PhoneNum;
         };
 
         /// <summary>
         /// class phonedata 的构造函数
         /// </summary>
-        public Phonedata()
+        public PhoneData()
         {
             string phone_dat_path = "phone.dat";
             Init(phone_dat_path);
@@ -91,30 +86,16 @@ namespace Phonedata
         /// <summary>
         /// class phonedata 的构造函数
         /// </summary>
-        public Phonedata(string phonedata)
+        public PhoneData(string phonedata)
         {
             Init(phonedata);
         }
 
-        /// <summary>
-        /// class phonedata 的析构函数
-        /// </summary>
-        ~Phonedata()
-        {
-            content.Close();
-        }
-        /// <summary>  
-        /// 截取字节数组  
-        /// </summary>  
-        /// <param name="srcBytes">要截取的字节数组</param>  
-        /// <param name="startIndex">开始截取位置的索引</param>  
-        /// <param name="length">要截取的字节长度</param>  
-        /// <returns>截取后的字节数组</returns>  
-        private  byte[] SubByte(byte[] srcBytes, int startIndex, int length)
+        private byte[] SubByte(byte[] srcBytes, int startIndex, int length)
         {
             System.IO.MemoryStream bufferStream = new System.IO.MemoryStream();
 
-           // Console.WriteLine("srcbyte length = {0}\n", srcBytes.Length);
+            // Console.WriteLine("srcbyte length = {0}\n", srcBytes.Length);
 
             byte[] returnByte = new byte[] { };
             if (srcBytes == null) { return returnByte; }
@@ -132,28 +113,13 @@ namespace Phonedata
             return returnByte;
         }
 
-        //将Stream 转换成 byte[]
-        /// <summary>
-        /// 将 Stream类型转换成 byte[]类型
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <returns></returns>
-        public  byte[] StreamToBytes(Stream stream)
-        {
-            byte[] bytes = new byte[stream.Length];
-            stream.Read(bytes, 0, bytes.Length);
-            stream.Seek(0, SeekOrigin.Begin);
-            return bytes;
-
-        }
-
         //turn 4 byte to int32
         /// <summary>
         /// 将 4个byte转换成 int32类型
         /// </summary>
         /// <param name="b"></param>
         /// <returns></returns>
-        private  Int32 Get4(byte[] b)
+        private Int32 Get4(byte[] b)
         {
             Int32 tmp;
             if (b.Length < 4)
@@ -176,11 +142,11 @@ namespace Phonedata
             switch (type)
             {
                 case (Int32)(CardType.CMCC):
-                     tmp = "中国移动";
-                     break;
+                    tmp = "中国移动";
+                    break;
                 case (Int32)(CardType.CMCC_V):
-                     tmp = "中国移动虚拟运营商";
-                     break;
+                    tmp = "中国移动虚拟运营商";
+                    break;
                 case (Int32)(CardType.CTCC):
                     tmp = "中国电信";
                     break;
@@ -201,64 +167,50 @@ namespace Phonedata
             return tmp;
         }
 
-        /// <summary>  
-        /// 报告指定的 System.Byte[] 在此实例中的第一个匹配项的索引。  
-        /// </summary>  
-        /// <param name="srcBytes">被执行查找的 System.Byte[]。</param>  
-        /// <param name="searchBytes">要查找的 System.Byte[]。</param>  
-        /// <returns>如果找到该字节数组，则为 searchBytes 的索引位置；如果未找到该字节数组，则为 -1。如果 searchBytes 为 null 或者长度为0，则返回值为 -1。</returns>  
-        private int IndexOf(byte[] srcBytes, byte[] searchBytes)
-        {
-            if (srcBytes == null) { return -1; }
-            if (searchBytes == null) { return -1; }
-            if (srcBytes.Length == 0) { return -1; }
-            if (searchBytes.Length == 0) { return -1; }
-            if (srcBytes.Length < searchBytes.Length) { return -1; }
-            for (int i = 0; i < srcBytes.Length - searchBytes.Length; i++)
-            {
-                if (srcBytes[i] == searchBytes[0])
-                {
-                    if (searchBytes.Length == 1) { return i; }
-                    bool flag = true;
-                    for (int j = 1; j < searchBytes.Length; j++)
-                    {
-                        if (srcBytes[i + j] != searchBytes[j])
-                        {
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if (flag) { return i; }
-                }
-            }
-            return -1;
-        }
-
         /// <summary>
-        ///  初始化程序
+        /// 初始化程序
         /// </summary>
+        /// <param name="phonedata"></param>
         public void Init(string phonedata)
         {
+            dicBuf = new Dictionary<int, string>();
             byte[] tmp = new byte[4];
 
             if (!File.Exists(phonedata))
-                {
-                    return;
-                }
-            content = File.Open(phonedata, FileMode.Open);
+            {
+                return;
+            }
 
-            Buf = new byte[content.Length];
-            Buf =   StreamToBytes(content);
+            byte[] zeroByte = Encoding.UTF8.GetBytes("\0");
+            int boundary;//第一个索引区的引索
+            int phone7;//电话号码前七位
+            int phoneDataIndex;//电话号码属性引索
+            int cardType;//卡类型值
+            string propertyCare;//合并卡类型后的电话号码属性
+            using (FileStream fs = new FileStream("phone.dat", FileMode.OpenOrCreate, FileAccess.Read))
+            {
+                Buf = new byte[fs.Length];
+                fs.Read(Buf, 0, (int)fs.Length);
+                boundary = Buf[4] | Buf[5] << 8 | Buf[6] << 16 | Buf[7] << 24;
+                for (int i = boundary; i < Buf.Length; i += 9)
+                {
+                    phone7 = Buf[i] | Buf[i + 1] << 8 | Buf[i + 2] << 16 | Buf[i + 3] << 24;
+                    phoneDataIndex = Buf[i + 4] | Buf[i + 5] << 8 | Buf[i + 6] << 16 | Buf[i + 7] << 24;
+                    cardType = Buf[i + 8];
+                    for (int n = phoneDataIndex; n < boundary; n++)
+                    {
+                        if (Buf[n] == zeroByte[0])
+                        {
+                            propertyCare = Encoding.UTF8.GetString(Buf, phoneDataIndex, n - phoneDataIndex) + "|" + cardType;
+                            dicBuf.Add(phone7, propertyCare);
+                            break;
+                        }
+                    }
+                }
+            }
 
             tmp = SubByte(Buf, 0, 4);
-            Version = System.Text.Encoding.Default.GetString(tmp);
-           
-            total_len = (int)content.Length;
-
-            indexOffset = Get4(SubByte(Buf, 4, 4));
-
-            total_record = (total_len - indexOffset) / 9;
-
+            Version = Encoding.Default.GetString(tmp);
         }
 
         /// <summary>
@@ -275,7 +227,7 @@ namespace Phonedata
         /// </summary>
         /// <param name="phone"></param>
         /// <returns></returns>
-        public  PhoneRecord  Lookup(Int64 phone)
+        public PhoneRecord Lookup(Int64 phone)
         {
             PhoneInfo pi = new PhoneInfo { };
             pi.PhoneNum = phone.ToString();
@@ -285,11 +237,11 @@ namespace Phonedata
                 {
                     phone /= 10;
                 }
-                pi.Phone7 =(UInt32) phone;
+                pi.Phone7 = (UInt32)phone;
 
                 return FindPhone(pi);
             }
-            return  new PhoneRecord{ };
+            return new PhoneRecord { };
         }
 
         /// <summary>
@@ -332,71 +284,23 @@ namespace Phonedata
         }
 
         /// <summary>
-        /// 利用二分法查找 phone.dat数据库中手机号码的信息
+        /// 利用字典数组查找 phone.dat数据库中手机号码的信息
         /// </summary>
         /// <param name="pi"></param>
         /// <returns>返回查找到的手机号码信息</returns>
-        private  PhoneRecord FindPhone(PhoneInfo pi)
+        private PhoneRecord FindPhone(PhoneInfo pi)
         {
-            PhoneRecord pr = new PhoneRecord { };
-            Int32 phone_seven_int32;
-            int left = 0;
-            int right = 0;
-            int total_len = Phonedata.total_len;
-            int mid = 0;
-            int offset = 0;
-            Int32 cur_phone, record_offset;
-            byte card_type;
-            string card_str;
-            string data_str;
-            string[] data_str_arr;
-            Int32 end_offset = 0;
-            byte[] Zero_end = System.Text.Encoding.Default.GetBytes("\0");
-            byte[] data;
-            
-            phone_seven_int32 = (Int32)pi.Phone7; //将uint32 转换为int32, 好用于对比
-            right = (total_len - indexOffset) / PHONE_INDEX_LENGTH;
-
-            for (; ; ) {
-                if (left > right)
-                {
-                    return pr;
-                }
-                //mid = (left + right) / 2;
-                mid = (left + right) >> 1;
-                offset = indexOffset + mid * PHONE_INDEX_LENGTH;
-                if (offset >= total_len)
-                {
-                    Console.WriteLine("offset >= total_len");
-                    return pr;
-                }
-                cur_phone = Get4(SubByte(Buf, offset, INT_LEN));
-                record_offset = Get4(SubByte(Buf, offset + INT_LEN, 4));
-
-                card_type = SubByte(Buf, offset + INT_LEN * 2, 1)[0];
-
-                if (cur_phone > phone_seven_int32)
-                {
-                    right = mid - 1;
-                } else if (cur_phone < phone_seven_int32)
-                {
-                    left = mid + 1;
-                } else
-                {
-                    byte[] cbyte = SubByte(Buf, record_offset,total_len - record_offset);
-                    end_offset = IndexOf(cbyte, Zero_end);
-                    data = SubByte(Buf, record_offset, end_offset);
-
-                    data_str = System.Text.Encoding.UTF8.GetString(data);
-
-                    data_str_arr = data_str.Split('|');
-                    card_str = GetCardType(card_type);
-                    pr.Set(pi.PhoneNum, data_str_arr[0], data_str_arr[1], data_str_arr[2], data_str_arr[3], card_str);
-
-                    return pr;
-                }
-
+            PhoneRecord pr = new PhoneRecord();
+            string s;
+            string[] strTemp;
+            if (!dicBuf.ContainsKey((int)pi.Phone7))
+            {
+                pr.Set(pi.PhoneNum, "null", "null", "null", "null", "null");
+                return pr;
             }
+            s = dicBuf[(int)pi.Phone7];
+            strTemp = s.Split(new char[] { '|' });
+            pr.Set(pi.PhoneNum, strTemp[0], strTemp[1], strTemp[2], strTemp[3], GetCardType(Convert.ToByte(strTemp[4])));
             return pr;
         }
 

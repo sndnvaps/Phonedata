@@ -5,34 +5,32 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Phonedata;
+using System.IO;
 
 namespace phonedata_benchmark
 {
     class Program
     {
-       static  List<string> Data;
+        static string[] s;
         static void Benchmark_add_element()
         {
-            Data = new List<string>();
-            for (int i = 1; i < 100000;i++)
-            {
-                string phone_info;
-                phone_info = string.Format("{0}{1}{2}{3}", "1897", i & 10000, "45","2678");
-                Data.Add(phone_info);
-            }
+            s = File.ReadAllLines("test.txt");
         }
         static void Benchmark_test()
         {
-            Phonedata.Phonedata pd = new Phonedata.Phonedata("phone.dat");
-            List<string> data = Program.Data;
+            Phonedata.PhoneData pd = new Phonedata.PhoneData("phone.dat");
             DateTime dt1 = DateTime.Now;
-            Parallel.ForEach(data, (i) =>
+            Parallel.ForEach(s, (i) =>
                 {
                     pd.Lookup(i);
 
                 });
+            //foreach (var item in s)
+            //{
+            //    pd.Lookup(item);
+            //}
             DateTime dt2 = DateTime.Now;
-            Console.WriteLine("并行计算 100000个手机号码的查找，用时： {0}毫秒。\n", (dt2 - dt1).TotalMilliseconds);
+            Console.WriteLine("并行计算 {0}个手机号码的查找，用时： {1}毫秒。\n", s.Length, (dt2 - dt1).TotalMilliseconds);
 
 
         }

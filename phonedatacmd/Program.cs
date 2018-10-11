@@ -12,17 +12,15 @@ namespace phonedatacmd
 
         static void Main(string[] args)
         {
-            Phonedata.Phonedata pd = new Phonedata.Phonedata("phone.dat");
+            Phonedata.PhoneData pd = new Phonedata.PhoneData("phone.dat");
             string output;
-            if(args.Length == 1 )
-            {
-                output = pd.Lookup(args[0]).ToString();
-                Console.WriteLine(output);
-            } else
-            {
-                Console.WriteLine("Usage:\t\n\tphonedatacmd.exe PhoneNumber\n");
-            }
- 
+            output = pd.Lookup("14794299760").ToString();
+            Console.WriteLine(output);
+            Console.ReadKey();
+            /*
+             * 1344710142
+             * 1344711000
+             */
         }
     }
 }
