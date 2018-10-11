@@ -6,12 +6,12 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://opensource.org/licenses/mit-license.php</licenseUrl>
+    <licenseUrl>https://sndnvaps.mit-license.org/2018</licenseUrl>
     <projectUrl>https://github.com/sndnvaps/Phonedata</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>First release.</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>v1.0.1</tags>
+    <tags>v1.0.2</tags>
   </metadata>
 </package>
