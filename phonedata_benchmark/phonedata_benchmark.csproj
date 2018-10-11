@@ -59,6 +59,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy  /r /y $(ProjectDir)..\phone.dat $(ProjectDir)$(OutDir)</PostBuildEvent>
+    <PostBuildEvent>xcopy  /r /y $(ProjectDir)..\phone.dat $(ProjectDir)$(OutDir)
+
+$(ProjectDir)7za.exe  x  -w$(ProjectDir)$(OutDir)  $(ProjectDir)Phonedata-test.zip</PostBuildEvent>
   </PropertyGroup>
 </Project>
