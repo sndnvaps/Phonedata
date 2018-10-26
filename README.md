@@ -44,11 +44,26 @@ namespace phonedatacmd
 
 ## 手机号码库
 
-#### 记录条数
-
-387695 (updated: 2018年4月)
+  - 归属地信息库文件大小：3,747,505 字节
+  - 归属地信息库最后更新：2018年10月
+  - 手机号段记录条数：415284
 
 #### 其他语言支持
+ ### 其他语言实现
+ 
+ python: https://github.com/lovedboy/phone
+ 
+ php :  https://github.com/shitoudev/phone-location , https://github.com/iwantofun/php_phone
+ 
+ php ext: https://github.com/jonnywang/phone
+ 
+ java: https://github.com/fengjiajie/phone-number-geo
+ 
+ Node: https://github.com/conzi/phone
+ 
+ C++: https://github.com/yanxijian/phonedata
+ 
+ C##: https://github.com/sndnvaps/Phonedata
 
 下载 [phone.dat](https://raw.githubusercontent.com/sndnvaps/Phonedata/master/phone.dat) 文件，用其他语言解析即可。
 
@@ -68,7 +83,7 @@ namespace phonedatacmd
 
 ```
 
-* `头部` 头部为8个字节，版本号为4个字节，第一个索引的偏移为4个字节。      
+* `头部` 头部为8个字节，版本号为4个字节，第一个索引的偏移为4个字节。
 * `记录区` 中每条记录的格式为"\<省份\>|\<城市\>|\<邮编\>|\<长途区号\>\0"。 每条记录以'\0'结束。  
 * `索引区` 中每条记录的格式为"<手机号前七位><记录区的偏移><卡类型>"，每个索引的长度为9个字节。
 
