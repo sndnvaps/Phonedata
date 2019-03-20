@@ -93,5 +93,11 @@ namespace phonedatacmd
  * 在索引区用二分查找得出手机号在记录区的记录偏移。
  * 在记录区从上一步得到的记录偏移处取数据，直到遇到'\0'。
 
+
+-----
+Buy me a beer
+
+<a href="https://liberapay.com/sndnvaps/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+
 ## License
 #### [MIT](https://sndnvaps.mit-license.org/2018)
