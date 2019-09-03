@@ -44,13 +44,15 @@ namespace phonedatacmd
 
 ## 手机号码库
 
-  - 归属地信息库文件大小：3,747,505 字节
-  - 归属地信息库最后更新：2018年10月
-  - 手机号段记录条数：415284
+  - 归属地信息库文件大小：3,931,724 字节
+  - 归属地信息库最后更新：2019年9月
+  - 手机号段记录条数：435728
 
 #### 其他语言支持
  ### 其他语言实现
  
+ go: https://github.com/xluohome/phonedata
+
  python: https://github.com/lovedboy/phone
  
  php :  https://github.com/shitoudev/phone-location , https://github.com/iwantofun/php_phone
@@ -63,7 +65,7 @@ namespace phonedatacmd
  
  C++: https://github.com/yanxijian/phonedata
  
- C##: https://github.com/sndnvaps/Phonedata
+ C#: https://github.com/sndnvaps/Phonedata
 
 下载 [phone.dat](https://raw.githubusercontent.com/sndnvaps/Phonedata/master/phone.dat) 文件，用其他语言解析即可。
 
