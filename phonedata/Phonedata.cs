@@ -187,7 +187,7 @@ namespace Phonedata
             int phoneDataIndex;//电话号码属性引索
             int cardType;//卡类型值
             string propertyCare;//合并卡类型后的电话号码属性
-            using (FileStream fs = new FileStream("phone.dat", FileMode.OpenOrCreate, FileAccess.Read))
+            using (FileStream fs = new FileStream(phonedata, FileMode.OpenOrCreate, FileAccess.Read))
             {
                 Buf = new byte[fs.Length];
                 fs.Read(Buf, 0, (int)fs.Length);
