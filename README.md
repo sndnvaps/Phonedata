@@ -1,7 +1,7 @@
 # phonedata port to CSharp
 
 
-# It can download from Nuget.com now
+# It can download from Nuget.com use Powershell
 
 	Install-Package Phonedata -Version 1.1.0
 	
@@ -12,44 +12,16 @@
     Net Framework v4.6.1
 
 --------------------------------------------
-# how to use it
 
-    import phonedata.dll to you C# project after build from source code or just use Powershell to install it 
-	
-# example code
-
-```csharp
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Phonedata;
-
-namespace phonedatacmd
-{
-    class Program
-    {
-
-
-        static void Main(string[] args)
-        {
-            Phonedata.Phonedata pd = new Phonedata.Phonedata("phone.dat");
-            string output;
-            output = pd.Lookup("13822399111").ToString();
-            Console.WriteLine(output);
-        }
-    }
-}
-```
 
 ## 手机号码库
 
- - 归属地信息库文件大小：4,040,893 字节
- - 归属地信息库最后更新：2020年04月
- - 手机号段记录条数：447893
+ - 归属地信息库文件大小：4,098,913 字节
+ - 归属地信息库最后更新：2021年08月
+ - 手机号段记录条数：454336
 
-#### 其他语言支持
- ### 其他语言实现
+
+## 其他语言实现
  
  go: https://github.com/xluohome/phonedata
 
@@ -66,6 +38,10 @@ namespace phonedatacmd
  C++: https://github.com/yanxijian/phonedata
  
  C#: https://github.com/sndnvaps/Phonedata
+
+ Rust: https://github.com/vincascm/phonedata
+
+ Kotlin: https://github.com/bytebeats/phone-geo
 
 下载 [phone.dat](https://raw.githubusercontent.com/sndnvaps/Phonedata/master/phone.dat) 文件，用其他语言解析即可。
 
@@ -95,6 +71,42 @@ namespace phonedatacmd
  * 在索引区用二分查找得出手机号在记录区的记录偏移。
  * 在记录区从上一步得到的记录偏移处取数据，直到遇到'\0'。
 
+
+# How to use it
+
+    import phonedata.dll to you C# project after build from source code or just use Powershell to install it 
+	
+# example code
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Phonedata;
+
+namespace phonedatacmd
+{
+    class Program
+    {
+
+
+        static void Main(string[] args)
+        {
+            Phonedata.Phonedata pd = new Phonedata.Phonedata("phone.dat");
+            string output;
+            output = pd.Lookup("13822399111").ToString();
+            Console.WriteLine(output);
+        }
+    }
+}
+```
+
+## 安全保证
+
+手机号归属地信息是通过网上公开数据进行收集整理。
+
+对手机号归属地信息数据的绝对正确，我不做任何保证。因此在生产环境使用前请您自行校对测试。
 
 -----
 Buy me a beer
