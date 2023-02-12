@@ -3,13 +3,13 @@
 
 # It can download from Nuget.com use Powershell
 
-	Install-Package Phonedata -Version 1.1.0
+	Install-Package Phonedata -Version 1.2.1
 	
 # Test Platform:
 
-    Windows 7 x64
-    vs 2017
+    Windows 7 x64/Widnwos 10 x64
     Net Framework v4.6.1
+    dotnet core 6.0 
 
 --------------------------------------------
 

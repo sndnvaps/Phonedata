@@ -10,8 +10,8 @@
     <projectUrl>https://github.com/sndnvaps/Phonedata</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Third release.</releaseNotes>
-    <copyright>Copyright 2018 - 2019</copyright>
-    <tags>v1.0.0 v1.0.2 v1.1.0</tags>
+    <releaseNotes>Forth release.</releaseNotes>
+    <copyright>Copyright 2018 - 2023</copyright>
+    <tags>v1.0.0 v1.0.2 v1.1.0 v1.2.0</tags>
   </metadata>
 </package>
