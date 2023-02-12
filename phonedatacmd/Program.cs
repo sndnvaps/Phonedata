@@ -14,7 +14,8 @@ namespace phonedatacmd
         {
             Phonedata.PhoneData pd = new Phonedata.PhoneData("phone.dat");
             string output;
-            output = pd.Lookup("14794299760").ToString();
+            //output = pd.Lookup("1892427").ToString();
+            output = pd.Lookup("1921892").ToString();
             Console.WriteLine(output);
             Console.ReadKey();
             /*

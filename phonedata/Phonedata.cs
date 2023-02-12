@@ -19,7 +19,8 @@ namespace Phonedata
             CTCC,           // 中国电信
             CTCC_V,         // 电信虚拟运营商
             CUCC_V,         // 联通虚拟运营商
-            CMCC_V			// 移动虚拟运营商
+            CMCC_V,			// 移动虚拟运营商
+            CBN             //中国广电 -> 中国广电网络股份有限公司
         };
 
         /// <summary>
@@ -158,6 +159,9 @@ namespace Phonedata
                     break;
                 case (Int32)(CardType.CUCC_V):
                     tmp = "中国联通虚拟运营商";
+                    break;
+                case (Int32)(CardType.CBN):
+                    tmp = "中国广电";
                     break;
                 default:
                     tmp = "未知电信运营商";
